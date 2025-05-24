@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import NameCard from "./components/NameCard";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [gender, setGender] = useState("すべて");
+  //これは 「選ばれている状態」 を保存してる。
+
+  const names = [
+    { name: "ももこ", gender: "女" },
+    { name: "さくら", gender: "女" },
+    { name: "はまじ", gender: "男" },
+    { name: "たかし", gender: "男" },
+  ];
+  const filteredNamas = names.filter((person) => {
+    return gender === "すべて" || person.gender === gender;
+
+    //.filter() のキモは「trueかfalseを分けること
+    //genderが全てだったら”全て”それ以外はgenderを出すってこと？？？
+  });
+
+  const handlecount = () => {
+    setCount(count + 1);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <button onClick={handlecount}>＋</button>
+      <div>{count}</div>
+
+      <label>
+        <input
+          type="radio"
+          value="すべて"
+          checked={gender === "すべて"}
+          onChange={(e) => setGender(e.target.value)}
+        />
+        すべて
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          value="女"
+          checked={gender === "女"}
+          onChange={(e) => setGender(e.target.value)}
+        />
+        女
+      </label>
+
+      <label>
+        <input
+          type="radio"
+          value="男"
+          checked={gender === "男"}
+          onChange={(e) => setGender(e.target.value)}
+        />
+        男
+      </label>
+
+      <ul>
+        {filteredNamas.map((person, index) => (
+          <NameCard key={index} person={person} />
+        ))}
+      </ul>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
